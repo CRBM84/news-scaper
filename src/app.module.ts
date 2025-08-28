@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Post } from './hacker-news/entities/post.entity';
+import { UsageLog } from './hacker-news/entities/usage-log.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HackerNewsModule } from './hacker-news/hacker-news.module';
 
@@ -9,7 +11,7 @@ import { HackerNewsModule } from './hacker-news/hacker-news.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'data.sqlite',
-      entities: [],
+      entities: [UsageLog, Post],
       synchronize: true,
     }),
     HackerNewsModule,
