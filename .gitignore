@@ -57,3 +57,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Database file
 /data/*.sqlite
+
+# VS Code
+.vscode/
+
+# database
+data.sqlite
