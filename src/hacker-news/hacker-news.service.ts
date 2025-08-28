@@ -1,4 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class HackerNewsService {}
+export class HackerNewsService {
+
+
+
+    async fetchNews() {
+
+    }
+
+    async fetchLongTitles() {
+
+    }
+
+    async fetchShortTitles() {
+
+    }
+}
