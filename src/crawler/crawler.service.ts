@@ -32,7 +32,7 @@ export class CrawlerService {
         const title: string = $(element).find('.titleline > a').text();
 
         const subTextRow = $(element).next();
-        const points: number = parseInt(subTextRow.find('.score').text().replace('points', ''));
+        const points: number = parseInt(subTextRow.find('.score').text().replace('points', '')) || 0;
 
         const comments: number = parseInt(subTextRow.find('a').last().text()) || 0; //TODO: consider change to .find comments in case ui is updated
 
@@ -116,7 +116,6 @@ export class CrawlerService {
         );
 
       this.logger.log('Returning #' + shortTitles.length + ' posts');
-      console.log(shortTitles);
       return shortTitles;
     } catch (error) {
       this.logger.log('Error fetching article data', error);
