@@ -24,8 +24,30 @@ export class CrawlerController {
         return this.requestHandler('short_title', () => this.hackerNewsService.fetchShortTitles());
     }
 
-    public async requestHandler(endpoint: string, callback: () => Promise<any>) {
-        //need start + stop time, success, error, result pass to logUseData 
-        //response in ms
+    public async requestHandler(endpoint: 'long_title' | 'short_title' | 'data_scrape', callback: () => Promise<any>) {
+
+        const startTime = Date.now();
+        let success = true;
+        let errorMessage = 'No error';
+        let resultCount = 0;
+        const filterType = endpoint;
+
+        try {
+            const results = await callback();
+            resultCount = results.length || 0;
+            return results;
+        } catch (error) {
+            success = false;
+            errorMessage = error.message || 'Unknown error';
+        } finally {
+            const responseTime = Date.now() - startTime;
+            await this.usageLogService.logUseData({
+                filterType,
+                resultCount,
+                success,
+                errorMessage,
+                responseTime
+            })
+        }
     }
 }
