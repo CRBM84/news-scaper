@@ -14,23 +14,26 @@ export class CrawlerService {
     private readonly postRepository: Repository<Post>,
     @InjectRepository(UsageLog)
     private readonly usageLogRepository: Repository<UsageLog>,
-  ) {}
+  ) { }
 
-  //add helper methods here
-
-  //service methods for endpoints
   async fetchNews() {
     this.logger.log('Fetching article list');
 
     try {
       const response = await axios.get('https://news.ycombinator.com/');
       this.logger.debug('Status: ' + response.status);
-
       const $ = cheerio.load(response.data);
 
-      //scracpe table holding posts of hacker news articles
-      //need to inspect the html.
-      //target
+      const posts = [];
+
+      $('tr.athing').each((_, element) => {
+        const rank = parseInt($(element).find('.rank').text().replace('.', ''));
+        console.log(rank);
+      })
+
+      //TODO: update cheerio logic to scrape each element
+      //TODO: save to local db for caching.
+      //TODO: create helper method for freshness
 
       return {};
     } catch (error) {
@@ -42,7 +45,7 @@ export class CrawlerService {
     }
   }
 
-  async fetchLongTitles() {}
+  async fetchLongTitles() { }
 
-  async fetchShortTitles() {}
+  async fetchShortTitles() { }
 }
