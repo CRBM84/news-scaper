@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Post } from './hacker-news/entities/post.entity';
-import { UsageLog } from './hacker-news/entities/usage-log.entity';
+import { Post } from './crawler/post.entity';
+import { UsageLog } from './usage-log/usage-log.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { HackerNewsModule } from './hacker-news/hacker-news.module';
+import { CrawlerModule } from './crawler/crawler.module';
+import { UsageLogModule } from './usage-log/usage-log.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { HackerNewsModule } from './hacker-news/hacker-news.module';
       entities: [UsageLog, Post],
       synchronize: true,
     }),
-    HackerNewsModule,
+    CrawlerModule,
+    UsageLogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { HackerNewsService } from './hacker-news.service';
+import { CrawlerService } from './crawler.service';
 
-@Controller('hacker-news')
-export class HackerNewsController {
-    constructor(private readonly hackerNewsService: HackerNewsService) { }
+@Controller('crawler')
+export class CrawlerController {
+    constructor(private readonly hackerNewsService: CrawlerService) { }
 
     @Get('scrape')
     async getHackerNews() {
