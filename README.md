@@ -45,8 +45,8 @@ A Nest.js project that scrapes the first 30 entries from [Hacker News](https://n
 ## Caching
 The post titles fetched are persisted in SQLite, effectively serving as a simple cache. In a real-world production environment, with remote db (MySQL, MongoDB etc.), I would implement an in-memory cache to reduce latency and database load.
 
-The screenshot below shows a long-title api fetching from Hacker News vs using cached data.
+The screenshot below shows a long-title api fetching from Hacker News vs using cached data. Time show in milliseconds.
 ![peformance](cache-performance-example.png)
 ## Testing
   ```bash
-   npm run start:dev
+   npm test
