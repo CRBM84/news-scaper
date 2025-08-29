@@ -11,12 +11,6 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeor
     @Column({ type: 'integer' })
     resultCount: number;
 
-    @Column({ length: 150 })
-    userAgent: string;
-
-    @Column({ length: 50 })
-    ipAddress: string;
-
     @Column()
     sucess: boolean
 
