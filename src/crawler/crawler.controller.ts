@@ -11,16 +11,21 @@ export class CrawlerController {
 
     @Get('scrape')
     async getHackerNews() {
-        return this.hackerNewsService.fetchNews();
+        return this.requestHandler('data_scrape', () => this.hackerNewsService.fetchNews());
     }
 
     @Get('long-titles')
     async getLongTitles() {
-        return this.hackerNewsService.fetchLongTitles();
+        return this.requestHandler('long_title', () => this.hackerNewsService.fetchLongTitles());
     }
 
     @Get('short-titles')
     async getShortTitles() {
-        return this.hackerNewsService.fetchShortTitles();
+        return this.requestHandler('short_title', () => this.hackerNewsService.fetchShortTitles());
+    }
+
+    public async requestHandler(endpoint: string, callback: () => Promise<any>) {
+        //need start + stop time, success, error, result pass to logUseData 
+        //response in ms
     }
 }

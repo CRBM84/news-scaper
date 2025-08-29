@@ -14,6 +14,7 @@ export class UsageLogService {
     async logUseData(data: UseLogData): Promise<UsageLog> {
         try {
             const dataLogEntry = this.usageLogRepository.create(data);
+            this.logger.log('Use data being saved...');
             return await this.usageLogRepository.save(dataLogEntry);
 
         } catch (error) {
