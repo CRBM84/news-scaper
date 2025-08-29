@@ -74,7 +74,27 @@ export class CrawlerService {
     }
   }
 
-  async fetchLongTitles() { }
+  async fetchLongTitles() {
+    const posts = await this.getRecentArticles();
+    this.logger.log('Fetching posts with titles longer than five words');
+
+    try {
+      const longTitles = posts
+        .filter((e) => ((e.title.match(/\b\p{L}+\b/gu) || []).length > 5))
+        .sort((a, b) => b.comments - a.comments) //sort by desc order
+        .map(({ id, createdAt, ...rest }) => rest); //remove id property 
+
+      this.logger.log('Returning #' + longTitles.length + ' articles');
+      console.log(longTitles);
+      return longTitles;
+    } catch (error) {
+      this.logger.log('Error fetching article titles', error);
+      throw new HttpException(
+        'Failed to reach Hacker News data, please try again latter',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 
   async fetchShortTitles() { }
 
