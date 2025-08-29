@@ -65,7 +65,7 @@ export class CrawlerService {
 
     try {
       let posts = await this.postRepository.find({ order: { createdAt: 'DESC' }, take: 30 });
-      if (posts.length || this.isDataStale(posts[0])) {
+      if (!posts.length || this.isDataStale(posts[0])) {
         this.logger.warn('No data or data is stale, fetching new data');
         await this.fetchNews();
         posts = await this.postRepository.find({ order: { createdAt: 'DESC' }, take: 30 });
@@ -128,5 +128,5 @@ export class CrawlerService {
   }
 
   //TODO: call usage-log service in each method
-  //TODO: define usage-long method/s
+  //TODO: define usage-log method/s
 }
