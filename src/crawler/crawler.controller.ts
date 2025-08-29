@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 import { CrawlerService } from './crawler.service';
 import { UsageLogService } from 'src/usage-log/usage-log.service';
 
@@ -39,6 +39,7 @@ export class CrawlerController {
         } catch (error) {
             success = false;
             errorMessage = error.message || 'Unknown error';
+            throw new InternalServerErrorException('An error occurred while processing your request.');
         } finally {
             const responseTime = Date.now() - startTime;
             await this.usageLogService.logUseData({

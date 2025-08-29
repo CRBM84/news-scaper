@@ -3,7 +3,6 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UsageLog } from '../usage-log/usage-log.entity';
 import { Post } from './post.entity';
 
 @Injectable()
@@ -12,8 +11,6 @@ export class CrawlerService {
   constructor(
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
-    @InjectRepository(UsageLog)
-    private readonly usageLogRepository: Repository<UsageLog>,
   ) { }
 
   async fetchNews() {
