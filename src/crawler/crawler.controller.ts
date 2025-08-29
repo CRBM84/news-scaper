@@ -1,6 +1,6 @@
 import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 import { CrawlerService } from './crawler.service';
-import { UsageLogService } from 'src/usage-log/usage-log.service';
+import { UsageLogService } from '../usage-log/usage-log.service';
 
 @Controller('crawler')
 export class CrawlerController {
