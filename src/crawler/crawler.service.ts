@@ -17,6 +17,7 @@ export class CrawlerService {
   ) { }
 
   async fetchNews() {
+    //TODO: invoke usage log service to log usage.
     this.logger.log('Fetching article list');
 
     try {
@@ -60,6 +61,8 @@ export class CrawlerService {
   }
 
   private async getRecentArticles(): Promise<Post[]> {
+    //TODO: invoke usage log service to log usage.
+
     try {
       let posts = await this.postRepository.find({ order: { createdAt: 'DESC' }, take: 30 });
       if (posts.length || this.isDataStale(posts[0])) {
@@ -80,15 +83,17 @@ export class CrawlerService {
 
     try {
       const longTitles = posts
-        .filter((e) => ((e.title.match(/\b\p{L}+\b/gu) || []).length > 5))
-        .sort((a, b) => b.comments - a.comments) //sort by desc order
-        .map(({ id, createdAt, ...rest }) => rest); //remove id property 
+        .filter(
+          (e) => ((e.title.match(/\b\p{L}+\b/gu) || []).length > 5))
+        .sort(
+          (a, b) => b.comments - a.comments) //sort by desc order
+        .map(
+          ({ id, createdAt, ...rest }) => rest); //remove id and createdAt properties;
 
-      this.logger.log('Returning #' + longTitles.length + ' articles');
-      console.log(longTitles);
+      this.logger.log('Returning #' + longTitles.length + ' posts');
       return longTitles;
     } catch (error) {
-      this.logger.log('Error fetching article titles', error);
+      this.logger.log('Error fetching article data', error);
       throw new HttpException(
         'Failed to reach Hacker News data, please try again latter',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -96,10 +101,32 @@ export class CrawlerService {
     }
   }
 
-  async fetchShortTitles() { }
+  async fetchShortTitles() {
+    const posts = await this.getRecentArticles();
+    this.logger.log('Fetching posts with titles shorter than five words');
 
+    try {
+      const shortTitles = posts
+        .filter(
+          (e) => ((e.title.match(/\b\p{L}+\b/gu) || []).length <= 5))
+        .sort(
+          (a, b) => b.points - a.points)
+        .map(
+          ({ id, createdAt, ...rest }) => rest
+        );
 
-  //TODO: create helper method for freshness
+      this.logger.log('Returning #' + shortTitles.length + ' posts');
+      console.log(shortTitles);
+      return shortTitles;
+    } catch (error) {
+      this.logger.log('Error fetching article data', error);
+      throw new HttpException(
+        'Failed to reach Hacker News data, please try again latter',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   //TODO: call usage-log service in each method
   //TODO: define usage-long method/s
 }
