@@ -24,16 +24,26 @@ export class CrawlerService {
       this.logger.debug('Status: ' + response.status);
       const $ = cheerio.load(response.data);
 
-      const posts = [];
+      const posts: Array<{ rank: number; title: string; points: number; comments: number; createdAt: Date }> = [];
 
       $('tr.athing').each((_, element) => {
-        const rank = parseInt($(element).find('.rank').text().replace('.', ''));
-        console.log(rank);
-      })
+        const rank: number = parseInt($(element).find('.rank').text().replace('.', ''));
+        const title: string = $(element).find('.titleline > a').text();
 
-      //TODO: update cheerio logic to scrape each element
+        const subTextRow = $(element).next();
+        const points: number = parseInt(subTextRow.find('.score').text().replace('points', ''));
+
+        const comments: number = parseInt(subTextRow.find('a').last().text()) || 0; //TODO: consider change to .find comments in case ui is updated
+
+        posts.push({ rank, title, points, comments, createdAt: new Date() });
+
+      })
+      console.log(posts);
+
       //TODO: save to local db for caching.
       //TODO: create helper method for freshness
+      //TODO: call usage-log service in each method
+      //TODO: define usage-long method/s
 
       return {};
     } catch (error) {
